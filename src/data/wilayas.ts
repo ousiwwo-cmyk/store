@@ -1,0 +1,71 @@
+import { Wilaya } from "@/types"
+
+export const wilayas: Wilaya[] = [
+  { code: 1, name_ar: "ولاية أدرار", name_fr: "Adrar" },
+  { code: 2, name_ar: "ولاية الشلف", name_fr: "Chlef" },
+  { code: 3, name_ar: "ولاية الأغواط", name_fr: "Laghouat" },
+  { code: 4, name_ar: "ولاية أم البواقي", name_fr: "Oum El Bouaghi" },
+  { code: 5, name_ar: "ولاية باتنة", name_fr: "Batna" },
+  { code: 6, name_ar: "ولاية بجاية", name_fr: "Béjaïa" },
+  { code: 7, name_ar: "ولاية بسكرة", name_fr: "Biskra" },
+  { code: 8, name_ar: "ولاية بشار", name_fr: "Béchar" },
+  { code: 9, name_ar: "ولاية البليدة", name_fr: "Blida" },
+  { code: 10, name_ar: "ولاية البويرة", name_fr: "Bouira" },
+  { code: 11, name_ar: "ولاية تمنراست", name_fr: "Tamanrasset" },
+  { code: 12, name_ar: "ولاية تبسة", name_fr: "Tébessa" },
+  { code: 13, name_ar: "ولاية تلمسان", name_fr: "Tlemcen" },
+  { code: 14, name_ar: "ولاية تيارت", name_fr: "Tiaret" },
+  { code: 15, name_ar: "ولاية تيزي وزو", name_fr: "Tizi Ouzou" },
+  { code: 16, name_ar: "ولاية الجزائر", name_fr: "Alger" },
+  { code: 17, name_ar: "ولاية جيجل", name_fr: "Djemila" },
+  { code: 18, name_ar: "ولاية سطيف", name_fr: "Sétif" },
+  { code: 19, name_ar: "ولاية سعيدة", name_fr: "Saïda" },
+  { code: 20, name_ar: "ولاية سكيكدة", name_fr: "Skikda" },
+  { code: 21, name_ar: "ولاية سيدي بلعباس", name_fr: "Sidi Bel Abbès" },
+  { code: 22, name_ar: "ولاية عنابة", name_fr: "Annaba" },
+  { code: 23, name_ar: "ولاية قالمة", name_fr: "Guelma" },
+  { code: 24, name_ar: "ولاية قسنطينة", name_fr: "Constantine" },
+  { code: 25, name_ar: "ولاية المدية", name_fr: "Médéa" },
+  { code: 26, name_ar: "ولاية مستغانم", name_fr: "Mostaganem" },
+  { code: 27, name_ar: "ولاية المسيلة", name_fr: "M'Sila" },
+  { code: 28, name_ar: "ولاية معسكر", name_fr: "Mascara" },
+  { code: 29, name_ar: "ولاية ورقلة", name_fr: "Ouargla" },
+  { code: 30, name_ar: "ولاية وهران", name_fr: "Oran" },
+  { code: 31, name_ar: "ولاية البيض", name_fr: "El Bayadh" },
+  { code: 32, name_ar: "ولاية إليزي", name_fr: "Illizi" },
+  { code: 33, name_ar: "ولاية برج بوعريريج", name_fr: "Bordj Bou Arreridj" },
+  { code: 34, name_ar: "ولاية بومرداس", name_fr: "Boumerdès" },
+  { code: 35, name_ar: "ولاية الطارف", name_fr: "El Tarf" },
+  { code: 36, name_ar: "ولاية تندوف", name_fr: "Tindouf" },
+  { code: 37, name_ar: "ولاية تيسمسيلت", name_fr: "Tissemsilt" },
+  { code: 38, name_ar: "ولاية الوادي", name_fr: "El Oued" },
+  { code: 39, name_ar: "ولاية خنشلة", name_fr: "Khenchela" },
+  { code: 40, name_ar: "ولاية سوق أهراس", name_fr: "Souk Ahras" },
+  { code: 41, name_ar: "ولاية تيبازة", name_fr: "Tipaza" },
+  { code: 42, name_ar: "ولاية ميلة", name_fr: "Mila" },
+  { code: 43, name_ar: "ولاية عين الدفلى", name_fr: "Aïn Defla" },
+  { code: 44, name_ar: "ولاية النعامة", name_fr: "Naâma" },
+  { code: 45, name_ar: "ولاية عين تموشنت", name_fr: "Aïn Témouchent" },
+  { code: 46, name_ar: "ولاية غرداية", name_fr: "Ghardaïa" },
+  { code: 47, name_ar: "ولاية غليزان", name_fr: "Relizane" },
+  { code: 48, name_ar: "ولاية تيميمون", name_fr: "Timimoun" },
+  { code: 49, name_ar: "ولاية برج باجي مختار", name_fr: "Bordj Badji Mokhtar" },
+  { code: 50, name_ar: "ولاية أولاد جلال", name_fr: "Ouled Djellal" },
+  { code: 51, name_ar: "ولاية بني عباس", name_fr: "Béni Abbès" },
+  { code: 52, name_ar: "ولاية عين صالح", name_fr: "Aïn Salah" },
+  { code: 53, name_ar: "ولاية عين قزام", name_fr: "Aïn Guezzam" },
+  { code: 54, name_ar: "ولاية توقرت", name_fr: "Touggourt" },
+  { code: 55, name_ar: "ولاية جانت", name_fr: "Djanet" },
+  { code: 56, name_ar: "ولاية المغير", name_fr: "El M'Ghair" },
+  { code: 57, name_ar: "ولاية تقرت", name_fr: "Touggourt" },
+  { code: 58, name_ar: "ولاية عين الدفلى", name_fr: "Aïn Defla" },
+]
+
+export function getWilayaName(code: number): string {
+  const wilaya = wilayas.find((w) => w.code === code)
+  return wilaya?.name_ar || ""
+}
+
+export function getWilayaByCode(code: number): Wilaya | undefined {
+  return wilayas.find((w) => w.code === code)
+}
