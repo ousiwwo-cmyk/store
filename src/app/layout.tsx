@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { Tajawal, Playfair_Display } from "next/font/google"
 import { Toaster } from "sonner"
+import { FacebookPixel } from "@/components/layout/FacebookPixel"
 
 const tajawal = Tajawal({
   subsets: ["arabic"],
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans antialiased">
         {children}
         <Toaster position="top-center" richColors />
+        <FacebookPixel />
       </body>
     </html>
   )

@@ -1,14 +1,17 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { ShoppingCart, Menu, X, Search, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useCartStore } from "@/store/cart"
 import { CartDrawer } from "@/components/cart/CartDrawer"
+import { fireSearch, usePageView } from "@/components/layout/PixelEvents"
 
 export function Header() {
+  usePageView()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
@@ -24,6 +27,7 @@ export function Header() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
+      fireSearch(searchQuery.trim())
       window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`
     }
   }

@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { CheckCircle, ShoppingBag, ArrowLeft, MessageCircle } from "lucide-react"
@@ -8,10 +8,29 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
+import { firePurchase } from "@/components/layout/PixelEvents"
+import { generateEventId } from "@/lib/fbpixel"
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams()
   const orderId = searchParams.get("orderId")
+
+  useEffect(() => {
+    if (orderId) {
+      const eventId = generateEventId("Purchase", orderId)
+      firePurchase(orderId, 0, [], eventId)
+
+      fetch("/api/capi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventName: "Purchase",
+          eventId,
+          customData: { currency: "DZD", value: 0, order_id: orderId },
+        }),
+      }).catch(() => {})
+    }
+  }, [orderId])
 
   return (
     <main className="flex-1 flex items-center justify-center px-4 py-16 sm:py-24">

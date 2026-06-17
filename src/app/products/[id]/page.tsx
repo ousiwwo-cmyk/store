@@ -13,6 +13,7 @@ import { Footer } from "@/components/layout/Footer"
 import { useCartStore } from "@/store/cart"
 import { supabase } from "@/lib/supabase"
 import { formatPrice } from "@/lib/utils"
+import { fireViewContent } from "@/components/layout/PixelEvents"
 import type { Product } from "@/types"
 
 export default function ProductPage() {
@@ -45,6 +46,9 @@ export default function ProductPage() {
       }
 
       setProduct(data as Product)
+
+      const p = data as Product
+      fireViewContent({ id: p.id, name: p.name, category: p.category, price: p.price })
 
       const { data: relatedData } = await supabase
         .from("products")

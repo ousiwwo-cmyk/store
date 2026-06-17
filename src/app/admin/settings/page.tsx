@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 
 
 import { useState, useEffect } from "react"
-import { Save, Store, Phone, MapPin, MessageCircle, Globe, Camera, Music2 } from "lucide-react"
+import { Save, Store, Phone, MapPin, MessageCircle, Globe, Camera, Music2, Share2, ToggleLeft, ToggleRight, Code } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -169,6 +169,79 @@ export default function AdminSettingsPage() {
                 placeholder="توصيل مجاني للطلبات فوق 5000 دج"
               />
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>إعدادات فيسبوك بيكسل</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">معرف البيكسل (Pixel ID)</label>
+            <div className="relative">
+              <Share2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                className="pr-10"
+                value={settings.fb_pixel_id ?? ""}
+                onChange={(e) => update("fb_pixel_id", e.target.value)}
+                placeholder="1234567890"
+                dir="ltr"
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">مثال: 1234567890</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">رمز الوصول (Access Token)</label>
+            <div className="relative">
+              <Code className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                className="pr-10 font-mono text-xs"
+                value={settings.fb_access_token ?? ""}
+                onChange={(e) => update("fb_access_token", e.target.value)}
+                placeholder="EAAx..."
+                dir="ltr"
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">مطلوب لـ Conversions API (خادم إلى خادم)</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">رمز اختبار (Test Event Code)</label>
+            <div className="relative">
+              <Code className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                className="pr-10"
+                value={settings.fb_test_code ?? ""}
+                onChange={(e) => update("fb_test_code", e.target.value)}
+                placeholder="TEST12345"
+                dir="ltr"
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">اختياري — من Meta Events Manager</p>
+          </div>
+          <div className="flex items-center justify-between py-2">
+            <label className="text-sm font-medium">تفعيل البيكسل</label>
+            <button
+              type="button"
+              onClick={() =>
+                update(
+                  "fb_enabled",
+                  settings.fb_enabled === "true" ? "false" : "true"
+                )
+              }
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                settings.fb_enabled === "true" ? "bg-[#C4622D]" : "bg-gray-300"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                  settings.fb_enabled === "true"
+                    ? "translate-x-6"
+                    : "translate-x-1"
+                }`}
+              />
+            </button>
           </div>
         </CardContent>
       </Card>

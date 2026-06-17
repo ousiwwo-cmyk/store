@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useCartStore } from "@/store/cart"
 import { formatPrice } from "@/lib/utils"
+import { fireAddToCart } from "@/components/layout/PixelEvents"
 
 interface ProductCardProps {
   id: string
@@ -43,6 +44,7 @@ export function ProductCard({
       price,
       image_url: imageUrl,
     })
+    fireAddToCart({ id, name, price })
     router.push("/checkout")
   }
 

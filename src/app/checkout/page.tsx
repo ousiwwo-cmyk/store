@@ -14,6 +14,8 @@ import { useCartStore } from "@/store/cart"
 import { supabase } from "@/lib/supabase"
 import { formatPrice } from "@/lib/utils"
 import { wilayas } from "@/data/wilayas"
+import { fireInitiateCheckout } from "@/components/layout/PixelEvents"
+import { generateEventId } from "@/lib/fbpixel"
 import { toast } from "sonner"
 
 export default function CheckoutPage() {
@@ -30,6 +32,12 @@ export default function CheckoutPage() {
   const [deliveryFee, setDeliveryFee] = useState(700)
   const [submitting, setSubmitting] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    if (items.length > 0) {
+      fireInitiateCheckout(items.length, subtotal)
+    }
+  }, [])
 
   useEffect(() => {
     if (items.length === 0) return
@@ -94,6 +102,20 @@ export default function CheckoutPage() {
         toast.error("حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.")
         return
       }
+
+      const eventId = generateEventId("InitiateCheckout", data.id)
+
+      fireInitiateCheckout(items.length, total, eventId)
+
+      fetch("/api/capi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventName: "InitiateCheckout",
+          eventId,
+          customData: { currency: "DZD", value: total, num_items: items.length },
+        }),
+      }).catch(() => {})
 
       clearCart()
       router.push(`/order-success?id=${data.id}`)
