@@ -13,7 +13,7 @@ import { generateEventId } from "@/lib/fbpixel"
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams()
-  const orderId = searchParams.get("orderId")
+  const orderId = searchParams.get("id")
 
   useEffect(() => {
     if (orderId) {

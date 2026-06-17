@@ -12,21 +12,36 @@ declare global {
   }
 }
 
+let pixelIdCache = ""
+
 export function initPixel(pixelId: string) {
   if (typeof window === "undefined" || !pixelId) return
   if (window.fbq) return
 
-  const script = document.createElement("script")
-  script.async = true
-  script.src = "https://connect.facebook.net/en_US/fbevents.js"
-  document.head.appendChild(script)
+  pixelIdCache = pixelId
 
-  window.fbq = function (...args: any[]) {
-    window._fbq = window._fbq || []
-    window._fbq.push(args)
+  const n = window
+  const f = n as any
+  if (f.fbq) return
+  f.fbq = function () {
+    f.fbq.callMethod
+      ? f.fbq.callMethod.apply(f.fbq, arguments)
+      : f.fbq.queue.push(arguments)
   }
-  window.fbq("init", pixelId)
-  window.fbq("track", "PageView")
+  if (!f._fbq) f._fbq = f.fbq
+  f.fbq.push = f.fbq
+  f.fbq.loaded = !0
+  f.fbq.version = "2.0"
+  f.fbq.queue = []
+
+  const t = document.createElement("script")
+  t.async = !0
+  t.src = "https://connect.facebook.net/en_US/fbevents.js"
+  const s = document.getElementsByTagName("script")[0]
+  s.parentNode?.insertBefore(t, s)
+
+  f.fbq("init", pixelId)
+  f.fbq("track", "PageView")
 }
 
 export function fbqEvent(
@@ -34,20 +49,19 @@ export function fbqEvent(
   params?: Record<string, any>,
   eventId?: string
 ) {
-  if (typeof window === "undefined" || !window.fbq) return
+  if (typeof window === "undefined" || !window.fbq || !pixelIdCache) return
   if (eventId) {
-    window.fbq("trackSingle", eventName, params, { eventID: eventId })
+    window.fbq("trackSingle", pixelIdCache, eventName, params, { eventID: eventId })
   } else {
     window.fbq("track", eventName, params)
   }
 }
 
-export function generateEventId(
-  eventName: string,
-  suffix?: string
-): string {
+export function isPixelReady() {
+  return typeof window !== "undefined" && !!window.fbq && !!pixelIdCache
+}
+
+export function generateEventId(eventName: string, suffix?: string): string {
   const ts = Date.now()
   return `${eventName}_${suffix || "web"}_${ts}`
 }
-
-

@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase"
 import { initPixel, FB_PIXEL_KEYS } from "@/lib/fbpixel"
 
 export function FacebookPixel() {
-  const [ready, setReady] = useState(false)
+  const [pixelId, setPixelId] = useState("")
 
   useEffect(() => {
     async function load() {
@@ -20,19 +20,25 @@ export function FacebookPixel() {
       for (const row of data) map[row.key] = row.value ?? ""
 
       const enabled = map[FB_PIXEL_KEYS.ENABLED] === "true"
-      const pixelId = map[FB_PIXEL_KEYS.PIXEL_ID] || ""
-      const testCode = map[FB_PIXEL_KEYS.TEST_CODE] || ""
+      const pid = map[FB_PIXEL_KEYS.PIXEL_ID] || ""
 
-      if (enabled && pixelId) {
-        initPixel(pixelId)
-        if (testCode) {
-          window.fbq?.("set", "testEventCode", testCode)
-        }
-        setReady(true)
+      if (enabled && pid) {
+        initPixel(pid)
+        setPixelId(pid)
       }
     }
     load()
   }, [])
 
-  return null
+  return pixelId ? (
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style={{ display: "none" }}
+        src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+        alt=""
+      />
+    </noscript>
+  ) : null
 }
