@@ -11,7 +11,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Package className="h-6 w-6 text-[#D4A843]" />
               <span className="text-xl font-bold">
-                بيت <span className="text-[#D4A843]">الأناقة</span>
+                دار <span className="text-[#D4A843]">البهجة</span>
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -67,7 +67,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-8 pt-8 text-center text-gray-500 text-sm">
-          <p>© {new Date().getFullYear()} بيت الأناقة — جميع الحقوق محفوظة</p>
+          <p>© {new Date().getFullYear()} دار البهجة — جميع الحقوق محفوظة</p>
         </div>
       </div>
     </footer>

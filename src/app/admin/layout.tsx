@@ -186,7 +186,7 @@ export default function AdminLayout({
               </button>
               <div className="hidden sm:flex items-center gap-2">
                 <Package className="h-5 w-5 text-[#C4622D]" />
-                <span className="font-bold">بيت الأناقة</span>
+                <span className="font-bold">دار البهجة</span>
                 <Badge variant="outline" className="text-xs">لوحة التحكم</Badge>
               </div>
             </div>

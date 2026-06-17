@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "بيت الأناقة | متجر الأواني المنزلية",
+  title: "دار البهجة | متجر الأواني المنزلية",
   description: "كل ما يحتاجه بيتك — بجودة وأناقة",
 }
 

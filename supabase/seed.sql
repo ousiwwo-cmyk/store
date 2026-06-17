@@ -79,7 +79,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Site Settings
 INSERT INTO site_settings (key, value) VALUES
-('store_name', 'بيت الأناقة'),
+('store_name', 'دار البهجة'),
 ('store_phone', '+213 XXX XX XX XX'),
 ('store_address', 'عنابة، الجزائر'),
 ('announcement_bar', '🚚 توصيل مجاني للطلبات فوق 5000 دج | الدفع عند الاستلام'),

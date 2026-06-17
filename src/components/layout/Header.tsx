@@ -56,7 +56,7 @@ export function Header() {
             <Link href="/" className="flex items-center gap-2">
               <Package className="h-6 w-6 text-[#C4622D]" />
               <span className="text-xl font-bold text-[#1A1A1A]">
-                بيت <span className="text-[#C4622D]">الأناقة</span>
+                دار <span className="text-[#C4622D]">البهجة</span>
               </span>
             </Link>
 

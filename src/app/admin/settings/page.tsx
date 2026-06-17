@@ -78,7 +78,7 @@ export default function AdminSettingsPage() {
                 className="pr-10"
                 value={settings.store_name ?? ""}
                 onChange={(e) => update("store_name", e.target.value)}
-                placeholder="بيت الأناقة"
+                placeholder="دار البهجة"
               />
             </div>
           </div>

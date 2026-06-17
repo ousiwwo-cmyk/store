@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
               <Package className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-[#1A1A1A]">لوحة التحكم</h1>
-            <p className="text-sm text-gray-500 mt-1">بيت الأناقة — متجر الأواني المنزلية</p>
+            <p className="text-sm text-gray-500 mt-1">دار البهجة — متجر الأواني المنزلية</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -94,7 +94,7 @@ export default function AdminLoginPage() {
           </form>
 
           <div className="mt-6 text-center text-xs text-gray-400">
-            © {new Date().getFullYear()} بيت الأناقة — جميع الحقوق محفوظة
+            © {new Date().getFullYear()} دار البهجة — جميع الحقوق محفوظة
           </div>
         </div>
       </div>
