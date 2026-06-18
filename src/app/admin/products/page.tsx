@@ -26,6 +26,8 @@ type FormData = {
   category: string
   stock: string
   image_url: string
+  image_file: File | null
+  image_preview: string
   is_featured: boolean
   is_on_sale: boolean
   discount_percent: string
@@ -39,6 +41,8 @@ const emptyForm: FormData = {
   category: "",
   stock: "0",
   image_url: "",
+  image_file: null,
+  image_preview: "",
   is_featured: false,
   is_on_sale: false,
   discount_percent: "0",
@@ -87,6 +91,8 @@ export default function AdminProductsPage() {
       category: product.category,
       stock: String(product.stock),
       image_url: product.image_url ?? "",
+      image_file: null,
+      image_preview: product.image_url ?? "",
       is_featured: product.is_featured,
       is_on_sale: product.is_on_sale,
       discount_percent: String(product.discount_percent),
@@ -110,6 +116,30 @@ export default function AdminProductsPage() {
 
     setSaving(true)
 
+    let imageUrl = form.image_url
+
+    if (form.image_file) {
+      const fileExt = form.image_file.name.split(".").pop()
+      const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${fileExt}`
+      const filePath = fileName
+
+      const { error: uploadError } = await supabase.storage
+        .from("products")
+        .upload(filePath, form.image_file)
+
+      if (uploadError) {
+        toast.error("فشل في رفع الصورة")
+        setSaving(false)
+        return
+      }
+
+      const { data: publicUrl } = supabase.storage
+        .from("products")
+        .getPublicUrl(filePath)
+
+      imageUrl = publicUrl?.publicUrl || ""
+    }
+
     const payload = {
       name: form.name.trim(),
       description: form.description.trim() || null,
@@ -117,7 +147,7 @@ export default function AdminProductsPage() {
       original_price: form.original_price ? Number(form.original_price) : null,
       category: form.category,
       stock: Number(form.stock) || 0,
-      image_url: form.image_url.trim() || null,
+      image_url: imageUrl || null,
       is_featured: form.is_featured,
       is_on_sale: form.is_on_sale,
       discount_percent: form.is_on_sale ? Number(form.discount_percent) || 0 : 0,
@@ -290,12 +320,47 @@ export default function AdminProductsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1">رابط الصورة</label>
-                  <Input
-                    value={form.image_url}
-                    onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-                    placeholder="رابط الصورة"
-                  />
+                  <label className="block text-sm font-medium text-[#1A1A1A] mb-1">صورة المنتج</label>
+                  <div className="space-y-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null
+                        if (file) {
+                          setForm({
+                            ...form,
+                            image_file: file,
+                            image_preview: URL.createObjectURL(file),
+                          })
+                        }
+                      }}
+                      className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#C4622D] file:text-white hover:file:bg-[#A85222] transition-colors cursor-pointer"
+                    />
+                    {form.image_preview && (
+                      <div className="relative w-full aspect-square rounded-lg overflow-hidden border border-[#E0D5C5] bg-[#FAF7F2]">
+                        <img
+                          src={form.image_preview}
+                          alt="معاينة"
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm({
+                              ...form,
+                              image_file: null,
+                              image_url: "",
+                              image_preview: "",
+                            })
+                          }
+                          className="absolute top-1 left-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               <div>
