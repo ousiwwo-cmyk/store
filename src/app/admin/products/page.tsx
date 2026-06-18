@@ -119,25 +119,23 @@ export default function AdminProductsPage() {
     let imageUrl = form.image_url
 
     if (form.image_file) {
-      const fileExt = form.image_file.name.split(".").pop()
-      const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${fileExt}`
-      const filePath = fileName
+      const uploadFormData = new FormData()
+      uploadFormData.append("file", form.image_file)
 
-      const { error: uploadError } = await supabase.storage
-        .from("products")
-        .upload(filePath, form.image_file)
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadFormData,
+      })
 
-      if (uploadError) {
-        toast.error("فشل في رفع الصورة")
+      if (!uploadRes.ok) {
+        const errData = await uploadRes.json().catch(() => ({}))
+        toast.error(errData.error || "فشل في رفع الصورة")
         setSaving(false)
         return
       }
 
-      const { data: publicUrl } = supabase.storage
-        .from("products")
-        .getPublicUrl(filePath)
-
-      imageUrl = publicUrl?.publicUrl || ""
+      const uploadData = await uploadRes.json()
+      imageUrl = uploadData.url || ""
     }
 
     const payload = {
