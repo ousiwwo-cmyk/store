@@ -3,18 +3,15 @@
 import { useState, useEffect, useMemo, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Search, SlidersHorizontal, X, ArrowLeft } from "lucide-react"
+import { Search, X, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import { ProductCard } from "@/components/store/ProductCard"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
 import { Skeleton } from "@/components/ui/skeleton"
 import { supabase } from "@/lib/supabase"
 import type { Product } from "@/types"
-import { categories } from "@/data/categories"
-import { formatPrice } from "@/lib/utils"
 
 const sortOptions = [
   { value: "newest", label: "الأحدث" },
@@ -24,24 +21,17 @@ const sortOptions = [
 
 function ProductsContent() {
   const searchParams = useSearchParams()
-  const categoryParam = searchParams.get("category")
   const searchParam = searchParams.get("search")
   const sortParam = searchParams.get("sort")
 
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState(searchParam || "")
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam)
   const [sortBy, setSortBy] = useState(sortParam || "newest")
-  const [filterOpen, setFilterOpen] = useState(false)
 
   useEffect(() => {
     setSearchQuery(searchParam || "")
   }, [searchParam])
-
-  useEffect(() => {
-    setSelectedCategory(categoryParam)
-  }, [categoryParam])
 
   useEffect(() => {
     setSortBy(sortParam || "newest")
@@ -63,13 +53,6 @@ function ProductsContent() {
 
   const filteredProducts = useMemo(() => {
     let result = [...products]
-
-    if (selectedCategory) {
-      const cat = categories.find((c) => c.slug === selectedCategory)
-      if (cat) {
-        result = result.filter((p) => p.category === cat.name)
-      }
-    }
 
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase()
@@ -96,15 +79,14 @@ function ProductsContent() {
     }
 
     return result
-  }, [products, selectedCategory, searchQuery, sortBy])
+  }, [products, searchQuery, sortBy])
 
   const resetFilters = () => {
-    setSelectedCategory(null)
     setSearchQuery("")
     setSortBy("newest")
   }
 
-  const hasActiveFilters = selectedCategory || searchQuery.trim()
+  const hasActiveFilters = searchQuery.trim()
 
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
@@ -146,223 +128,81 @@ function ProductsContent() {
                 </button>
               )}
             </div>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="sm:hidden gap-2"
-              onClick={() => setFilterOpen(true)}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 mb-6">
+          <span className="text-sm text-gray-500">ترتيب:</span>
+          <div className="flex flex-wrap gap-1">
+            {sortOptions.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => setSortBy(opt.value)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  sortBy === opt.value
+                    ? "bg-[#C4622D] text-white"
+                    : "bg-white border border-[#E0D5C5] text-[#1A1A1A] hover:border-[#C4622D]"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+          {hasActiveFilters && (
+            <button
+              onClick={resetFilters}
+              className="mr-auto text-xs text-[#C4622D] hover:text-[#A85222] transition-colors flex items-center gap-1"
             >
-              <SlidersHorizontal className="h-4 w-4" />
-              فلتر
-            </Button>
-          </div>
-        </div>
-
-        <div className="flex gap-8">
-          <aside className="hidden sm:block w-56 flex-shrink-0">
-            <div className="bg-white rounded-xl border border-[#E0D5C5] p-5 sticky top-28">
-              <h3 className="font-bold text-sm mb-4">الفئات</h3>
-              <div className="space-y-1">
-                <button
-                  onClick={() => setSelectedCategory(null)}
-                  className={`w-full text-right px-3 py-2 rounded-lg text-sm transition-colors ${
-                    selectedCategory === null
-                      ? "bg-[#C4622D] text-white font-medium"
-                      : "hover:bg-[#FAF7F2] text-[#1A1A1A]"
-                  }`}
-                >
-                  الكل
-                </button>
-                {categories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.slug)}
-                    className={`w-full text-right px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
-                      selectedCategory === cat.slug
-                        ? "bg-[#C4622D] text-white font-medium"
-                        : "hover:bg-[#FAF7F2] text-[#1A1A1A]"
-                    }`}
-                  >
-                    <span>{cat.icon}</span>
-                    <span>{cat.name}</span>
-                  </button>
-                ))}
-              </div>
-
-              <hr className="my-4 border-[#E0D5C5]" />
-
-              <h3 className="font-bold text-sm mb-4">الترتيب</h3>
-              <div className="space-y-1">
-                {sortOptions.map((opt) => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setSortBy(opt.value)}
-                    className={`w-full text-right px-3 py-2 rounded-lg text-sm transition-colors ${
-                      sortBy === opt.value
-                        ? "bg-[#C4622D] text-white font-medium"
-                        : "hover:bg-[#FAF7F2] text-[#1A1A1A]"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </aside>
-
-          {filterOpen && (
-            <div className="fixed inset-0 z-50 sm:hidden">
-              <div
-                className="absolute inset-0 bg-black/40"
-                onClick={() => setFilterOpen(false)}
-              />
-              <div className="absolute top-0 bottom-0 right-0 w-72 bg-[#FAF7F2] shadow-xl">
-                <div className="flex items-center justify-between p-4 border-b border-[#E0D5C5] bg-white">
-                  <h2 className="font-bold">تصفية</h2>
-                  <button
-                    onClick={() => setFilterOpen(false)}
-                    className="p-1 hover:text-[#C4622D] transition-colors"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
-                <div className="p-4 space-y-6">
-                  <div>
-                    <h3 className="font-bold text-sm mb-3">الفئات</h3>
-                    <div className="space-y-1">
-                      <button
-                        onClick={() => {
-                          setSelectedCategory(null)
-                          setFilterOpen(false)
-                        }}
-                        className={`w-full text-right px-3 py-2 rounded-lg text-sm transition-colors ${
-                          selectedCategory === null
-                            ? "bg-[#C4622D] text-white font-medium"
-                            : "hover:bg-white text-[#1A1A1A]"
-                        }`}
-                      >
-                        الكل
-                      </button>
-                      {categories.map((cat) => (
-                        <button
-                          key={cat.id}
-                          onClick={() => {
-                            setSelectedCategory(cat.slug)
-                            setFilterOpen(false)
-                          }}
-                          className={`w-full text-right px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
-                            selectedCategory === cat.slug
-                              ? "bg-[#C4622D] text-white font-medium"
-                              : "hover:bg-white text-[#1A1A1A]"
-                          }`}
-                        >
-                          <span>{cat.icon}</span>
-                          <span>{cat.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-sm mb-3">الترتيب</h3>
-                    <div className="space-y-1">
-                      {sortOptions.map((opt) => (
-                        <button
-                          key={opt.value}
-                          onClick={() => {
-                            setSortBy(opt.value)
-                            setFilterOpen(false)
-                          }}
-                          className={`w-full text-right px-3 py-2 rounded-lg text-sm transition-colors ${
-                            sortBy === opt.value
-                              ? "bg-[#C4622D] text-white font-medium"
-                              : "hover:bg-white text-[#1A1A1A]"
-                          }`}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <X className="h-3 w-3" />
+              إعادة تعيين
+            </button>
           )}
-
-          <div className="flex-1 min-w-0">
-            <div className="hidden sm:flex items-center gap-2 mb-6">
-              <span className="text-sm text-gray-500">ترتيب:</span>
-              <div className="flex gap-1">
-                {sortOptions.map((opt) => (
-                  <button
-                    key={opt.value}
-                    onClick={() => setSortBy(opt.value)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      sortBy === opt.value
-                        ? "bg-[#C4622D] text-white"
-                        : "bg-white border border-[#E0D5C5] text-[#1A1A1A] hover:border-[#C4622D]"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-              {hasActiveFilters && (
-                <button
-                  onClick={resetFilters}
-                  className="mr-auto text-xs text-[#C4622D] hover:text-[#A85222] transition-colors flex items-center gap-1"
-                >
-                  <X className="h-3 w-3" />
-                  إعادة تعيين
-                </button>
-              )}
-            </div>
-
-            {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="space-y-3">
-                    <Skeleton className="aspect-square rounded-xl" />
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
-                  </div>
-                ))}
-              </div>
-            ) : filteredProducts.length === 0 ? (
-              <div className="text-center py-20">
-                <div className="text-5xl mb-4">🔍</div>
-                <h3 className="text-xl font-bold mb-2">لا توجد منتجات</h3>
-                <p className="text-gray-500 mb-6 max-w-md mx-auto">
-                  لم نعثر على منتجات تطابق بحثك. حاول تغيير الفئة أو كلمة البحث.
-                </p>
-                <div className="flex items-center justify-center gap-3">
-                  <Button variant="outline" onClick={resetFilters}>
-                    إعادة تعيين الفلتر
-                  </Button>
-                  <Link href="/products">
-                    <Button>عرض الكل</Button>
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    id={product.id}
-                    name={product.name}
-                    price={product.price}
-                    originalPrice={product.original_price}
-                    category={product.category}
-                    imageUrl={product.image_url}
-                    isOnSale={product.is_on_sale}
-                    discountPercent={product.discount_percent}
-                    isFeatured={product.is_featured}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
         </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="space-y-3">
+                <Skeleton className="aspect-square rounded-xl" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            ))}
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="text-5xl mb-4">🔍</div>
+            <h3 className="text-xl font-bold mb-2">لا توجد منتجات</h3>
+            <p className="text-gray-500 mb-6 max-w-md mx-auto">
+              لم نعثر على منتجات تطابق بحثك. حاول تغيير كلمة البحث.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <Button variant="outline" onClick={resetFilters}>
+                إعادة تعيين البحث
+              </Button>
+              <Link href="/products">
+                <Button>عرض الكل</Button>
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                price={product.price}
+                originalPrice={product.original_price}
+                category={product.category}
+                imageUrl={product.image_url}
+                isOnSale={product.is_on_sale}
+                discountPercent={product.discount_percent}
+                isFeatured={product.is_featured}
+              />
+            ))}
+          </div>
+        )}
       </main>
       <Footer />
     </div>

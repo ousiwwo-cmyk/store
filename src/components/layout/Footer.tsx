@@ -24,9 +24,8 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4 text-[#D4A843]">روابط سريعة</h3>
             <ul className="space-y-2">
               <li><Link href="/products" className="text-gray-400 hover:text-white text-sm transition-colors">جميع المنتجات</Link></li>
-              <li><Link href="/products?category=أواني-الطبخ" className="text-gray-400 hover:text-white text-sm transition-colors">أواني الطبخ</Link></li>
-              <li><Link href="/products?category=أدوات-المطبخ" className="text-gray-400 hover:text-white text-sm transition-colors">أدوات المطبخ</Link></li>
-              <li><Link href="/products?category=الديكور" className="text-gray-400 hover:text-white text-sm transition-colors">الديكور</Link></li>
+              <li><Link href="/products?sort=price-asc" className="text-gray-400 hover:text-white text-sm transition-colors">أقل الأسعار</Link></li>
+              <li><Link href="/products?sort=price-desc" className="text-gray-400 hover:text-white text-sm transition-colors">أعلى الأسعار</Link></li>
             </ul>
           </div>
 

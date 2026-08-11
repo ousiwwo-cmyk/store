@@ -2,8 +2,6 @@
 
 export const dynamic = 'force-dynamic'
 
-
-
 import { useState, useEffect } from "react"
 import { Plus, Edit2, Trash2, Search, Star, Percent, Image, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,11 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogClose } from "@/components/ui/dialog"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { supabase } from "@/lib/supabase"
 import { formatPrice } from "@/lib/utils"
 import { toast } from "sonner"
-import { categories } from "@/data/categories"
 import type { Product } from "@/types"
 
 type FormData = {
@@ -23,7 +19,6 @@ type FormData = {
   description: string
   price: string
   original_price: string
-  category: string
   stock: string
   image_url: string
   image_file: File | null
@@ -38,7 +33,6 @@ const emptyForm: FormData = {
   description: "",
   price: "",
   original_price: "",
-  category: "",
   stock: "0",
   image_url: "",
   image_file: null,
@@ -88,7 +82,6 @@ export default function AdminProductsPage() {
       description: product.description ?? "",
       price: String(product.price),
       original_price: product.original_price ? String(product.original_price) : "",
-      category: product.category,
       stock: String(product.stock),
       image_url: product.image_url ?? "",
       image_file: null,
@@ -105,12 +98,8 @@ export default function AdminProductsPage() {
       toast.error("يرجى إدخال اسم المنتج")
       return
     }
-    if (!form.price || isNaN(Number(form.price)) || Number(form.price) <= 0) {
+if (!form.price || isNaN(Number(form.price)) || Number(form.price) <= 0) {
       toast.error("يرجى إدخال سعر صالح")
-      return
-    }
-    if (!form.category) {
-      toast.error("يرجى اختيار الفئة")
       return
     }
 
@@ -143,7 +132,7 @@ export default function AdminProductsPage() {
       description: form.description.trim() || null,
       price: Number(form.price),
       original_price: form.original_price ? Number(form.original_price) : null,
-      category: form.category,
+      category: "عام",
       stock: Number(form.stock) || 0,
       image_url: imageUrl || null,
       is_featured: form.is_featured,
@@ -289,25 +278,7 @@ export default function AdminProductsPage() {
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-[#1A1A1A] mb-1">الفئة</label>
-                <Select
-                  value={form.category}
-                  onValueChange={(value) => setForm({ ...form, category: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر الفئة" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.name}>
-                        {cat.icon} {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+<div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[#1A1A1A] mb-1">المخزون</label>
                   <Input
@@ -501,10 +472,7 @@ export default function AdminProductsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Badge variant="secondary" className="text-[10px]">
-                      {product.category}
-                    </Badge>
+<div className="flex items-center gap-2 flex-wrap">
                     <Badge
                       variant={product.stock > 0 ? "success" : "destructive"}
                       className="text-[10px]"

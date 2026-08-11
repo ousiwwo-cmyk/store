@@ -10,7 +10,6 @@ import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
 import { supabase } from "@/lib/supabase"
 import { formatPrice } from "@/lib/utils"
-import { categories } from "@/data/categories"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { Product } from "@/types"
 
@@ -64,9 +63,9 @@ export default function HomePage() {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <Link href="/products?category=أواني-الطبخ">
+              <Link href="/products?sort=price-desc">
                 <Button size="lg" variant="outline" className="text-base border-white/30 text-white hover:bg-white/10">
-                  أشهر الفئات
+                  منتجاتنا المميزة
                 </Button>
               </Link>
             </div>
@@ -95,29 +94,6 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Categories Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
-          تصفح حسب <span className="text-[#C4622D]">الفئة</span>
-        </h2>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-          {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/products?category=${cat.slug}`}
-              className="group flex flex-col items-center gap-2 p-4 sm:p-6 rounded-xl bg-white border border-[#E0D5C5] hover:shadow-md hover:border-[#C4622D] transition-all duration-300"
-            >
-              <span className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300">
-                {cat.icon}
-              </span>
-              <span className="text-xs sm:text-sm font-medium text-center">
-                {cat.name}
-              </span>
-            </Link>
-          ))}
         </div>
       </section>
 

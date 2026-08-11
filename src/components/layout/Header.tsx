@@ -72,12 +72,6 @@ export function Header() {
               <Link href="/products" className="text-sm font-medium text-[#1A1A1A] hover:text-[#C4622D] transition-colors">
                 المنتجات
               </Link>
-              <Link href="/products?category=أواني-الطبخ" className="text-sm font-medium text-[#1A1A1A] hover:text-[#C4622D] transition-colors">
-                أواني الطبخ
-              </Link>
-              <Link href="/products?category=أدوات-المطبخ" className="text-sm font-medium text-[#1A1A1A] hover:text-[#C4622D] transition-colors">
-                أدوات المطبخ
-              </Link>
             </nav>
 
             {/* Left Actions */}
@@ -133,18 +127,6 @@ export function Header() {
               </Link>
               <Link href="/products" className="block py-2 text-sm font-medium hover:text-[#C4622D]" onClick={() => setIsMenuOpen(false)}>
                 جميع المنتجات
-              </Link>
-              <Link href="/products?category=أواني-الطبخ" className="block py-2 text-sm font-medium hover:text-[#C4622D]" onClick={() => setIsMenuOpen(false)}>
-                أواني الطبخ
-              </Link>
-              <Link href="/products?category=أدوات-المطبخ" className="block py-2 text-sm font-medium hover:text-[#C4622D]" onClick={() => setIsMenuOpen(false)}>
-                أدوات المطبخ
-              </Link>
-              <Link href="/products?category=غرفة-النوم" className="block py-2 text-sm font-medium hover:text-[#C4622D]" onClick={() => setIsMenuOpen(false)}>
-                غرفة النوم
-              </Link>
-              <Link href="/products?category=الحمام" className="block py-2 text-sm font-medium hover:text-[#C4622D]" onClick={() => setIsMenuOpen(false)}>
-                الحمام
               </Link>
             </div>
           </div>

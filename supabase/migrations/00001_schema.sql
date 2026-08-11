@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT,
   price NUMERIC NOT NULL,
   original_price NUMERIC,
-  category TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'عام',
   stock INTEGER DEFAULT 0,
   image_url TEXT,
   is_featured BOOLEAN DEFAULT false,
