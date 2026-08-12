@@ -49,12 +49,12 @@ export default function HomePage() {
               🎉 تخفيضات تصل إلى ٢٠٪
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-              كل ما يحتاجه <span className="text-[#D4A843]">بيتك</span>
+              تسوق كل ما <span className="text-[#D4A843]">تحتاجه</span>
               <br />
-              بجودة <span className="text-[#D4A843]">وأناقة</span>
+              من <span className="text-[#D4A843]">مكان واحد</span>
             </h1>
             <p className="text-lg sm:text-xl text-gray-300 mb-8 leading-relaxed">
-              أواني منزلية، أدوات مطبخ، ديكورات، ومستلزمات الحمام — بأفضل الأسعار في الجزائر
+              تشكيلة واسعة من مختلف السلع والمنتجات بأسعار منافسة وتوصيل لكل الولايات في الجزائر
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/products">

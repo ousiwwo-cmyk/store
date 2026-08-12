@@ -86,7 +86,7 @@ export default function CheckoutPage() {
         .insert({
           customer_name: fullName.trim(),
           customer_phone: phone.trim(),
-          customer_wilaya: wilayaCode,
+          customer_wilaya: selectedWilaya?.name_ar || wilayaCode,
           customer_address: address.trim(),
           items,
           subtotal,
